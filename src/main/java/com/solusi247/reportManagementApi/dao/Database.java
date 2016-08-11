@@ -7,8 +7,8 @@ public class Database {
 	
 	public static Connection getConnection() {
 		try {
-//			String connectionURL = "jdbc:mysql://localhost:3306/report_management"; //Laptop Edityo
-			String connectionURL = "jdbc:mysql://192.168.1.228:3306/report_management"; //Server Solusi
+//			String connectionURL = "jdbc:mysql://localhost:3306/report_management?autoReconnect=true"; //Laptop Edityo
+			String connectionURL = "jdbc:mysql://192.168.1.228:3306/report_management?autoReconnect=true"; //Server Solusi
 			Connection connection = null;
 			Class.forName("com.mysql.jdbc.Driver");
 //			connection = DriverManager.getConnection(connectionURL, "root", ""); //Laptop Edityo

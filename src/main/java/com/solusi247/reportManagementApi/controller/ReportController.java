@@ -32,6 +32,7 @@ public class ReportController {
 	Report report = new Report();	
 	ReportServiceImpl reportService = new ReportServiceImpl();
 	
+	//mendapatkan semua report yang ada di database
 	@GET
 	@Path("/getAllReports")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +52,7 @@ public class ReportController {
 		return getAllReport;
 	}
 	
+	//mendapatkan report berdasarkan user id
 	@GET
 	@Path("/getAllReportById")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -60,7 +62,7 @@ public class ReportController {
 		return getAllReport;
 	}
 	
-	
+	//memasukan report
 	@POST
 	@Path("/insertReport")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -114,6 +116,7 @@ public class ReportController {
 		return Response.status(200).entity(output).build();
 	}
 	
+	//mengupdate report
 	@PUT
 	@Path("/updateReport")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -148,12 +151,17 @@ public class ReportController {
 			@QueryParam("activity") String activity,
 			@QueryParam("status") int status,
 			@QueryParam("desc") String desc,
+			@QueryParam("old_attachment") String old_attachment,
 			@QueryParam("attachment") String attachment,
 			@QueryParam("report_id") int report_id){
 		reportService.updateReportWithoutImage(date, project, activity, status, desc, attachment, report_id);
+		if (old_attachment!=null) {
+			deleteFile(old_attachment);
+		}
 		return Response.status(200).entity("Report updated").build();
 	}
 	
+	//menghapus report
 	@DELETE
 	@Path("/deleteReport")
 	public Response deleteReport(
@@ -162,6 +170,14 @@ public class ReportController {
 		reportService.deleteReport(report_id);
 		deleteFile(attachment);
 		return Response.status(200).entity("Report deleted").build();
+	}
+	
+	@DELETE
+	@Path("/deleteImage")
+	public Response deleteImage(
+			@QueryParam("attachment") String attachment) {
+		deleteFile(attachment);
+		return Response.status(200).entity("Image deleted").build();
 	}
 	
 	private void writeToFile(InputStream attachment, String fileName) {
